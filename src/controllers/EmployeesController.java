@@ -36,6 +36,11 @@ public class EmployeesController implements ActionListener, MouseListener, KeyLi
         this.views.btn_employee_delete.addActionListener(this);
         // Botón cancelar
         this.views.btn_employee_cancel.addActionListener(this);
+        // Botón de cambiar contraseña
+        this.views.btn_profile_edit.addActionListener(this);
+        
+        // Label employees
+        this.views.jLabelEmployees.addMouseListener(this);
         
         // Eventos
         this.views.employees_table.addMouseListener(this);
@@ -128,6 +133,30 @@ public class EmployeesController implements ActionListener, MouseListener, KeyLi
         } else if (e.getSource() == views.btn_employee_cancel) {
             cleanForm();
             views.employees_table.clearSelection();
+        } else if (e.getSource() == views.btn_profile_edit) {
+            // Obtener los campos de la nueva contraseña
+            String newPassword = String.valueOf(views.txt_profile_new_password.getPassword());
+            String confirmNewPassword = String.valueOf(views.txt_profile_confirm_password.getPassword());
+            
+            // Validar que las cajas de texto no sean vacías
+            if (!newPassword.equals("") && !confirmNewPassword.equals("")) {
+                // Validar que sean iguales
+                if (newPassword.equals(confirmNewPassword)) {
+                    employee.setPassword(newPassword);
+                    
+                    if (employeesDao.updateEmployeePassword(employee) != false) {
+                        JOptionPane.showMessageDialog(null, "Contraseña actualizada con exito");
+                        views.txt_profile_new_password.setText("");
+                        views.txt_profile_confirm_password.setText("");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Ocurrio un error al actualizar la contraseña");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Los campos no deben estar vacíos");
+            }
         }
     }
     
@@ -168,6 +197,15 @@ public class EmployeesController implements ActionListener, MouseListener, KeyLi
             views.txt_employee_id.setEditable(false);
             views.txt_employee_password.setEnabled(false);
             views.btn_employee_register.setEnabled(false);
+        } else if (e.getSource() == views.jLabelEmployees) {
+            if (rol.equals("Administrador")) {
+                views.jTabbedPane1.setSelectedIndex(3);
+                
+            } else {
+                views.jTabbedPane1.setEnabledAt(3, false);
+                views.jLabelEmployees.setEnabled(false);
+                JOptionPane.showMessageDialog(null, "No tienes privilegios de administrador");
+            }
         }
         
     }

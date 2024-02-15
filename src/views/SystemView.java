@@ -4,6 +4,8 @@ import controllers.EmployeesController;
 import controllers.SettingsController;
 import models.Employees;
 import models.EmployeesDao;
+import static models.EmployeesDao.full_name_user;
+import static models.EmployeesDao.rol_user;
 
 public class SystemView extends javax.swing.JFrame {
     // Empleados
@@ -14,7 +16,7 @@ public class SystemView extends javax.swing.JFrame {
         initComponents();
         setSize(1208, 680);
         setResizable(false);
-        setTitle("Panel de administración");
+        titleInterface();
         setLocationRelativeTo(null);
         
         // Instancia del controlador
@@ -25,6 +27,13 @@ public class SystemView extends javax.swing.JFrame {
         // Controlador de empleados
         EmployeesController employees_controller = new EmployeesController(employee, employeesDao, this);
         employees_controller.listAllEmployees();
+        setting.loadProfile();
+    }
+    
+    public void titleInterface() {
+        setTitle("Panel - " + rol_user);
+        lblUsername.setText(full_name_user);
+        lblRol.setText(rol_user);
     }
 
     /**
@@ -59,6 +68,8 @@ public class SystemView extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btn_photo = new javax.swing.JButton();
         btn_logout = new javax.swing.JButton();
+        lblUsername = new javax.swing.JLabel();
+        lblRol = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
@@ -431,6 +442,14 @@ public class SystemView extends javax.swing.JFrame {
             }
         });
         jPanel3.add(btn_logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 35, -1, 30));
+
+        lblUsername.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblUsername.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel3.add(lblUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 40, 140, 20));
+
+        lblRol.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblRol.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel3.add(lblRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 60, 140, 20));
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 1010, 100));
 
@@ -1641,6 +1660,8 @@ public class SystemView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     public javax.swing.JTabbedPane jTabbedPane1;
+    public javax.swing.JLabel lblRol;
+    public javax.swing.JLabel lblUsername;
     public javax.swing.JTable products_table;
     public javax.swing.JTable purchases_table;
     public javax.swing.JTable reports_table;
