@@ -1,16 +1,30 @@
 package views;
 
+import controllers.CustomersController;
 import controllers.EmployeesController;
+import controllers.ProductsController;
 import controllers.SettingsController;
+import models.Customers;
+import models.CustomersDao;
 import models.Employees;
 import models.EmployeesDao;
 import static models.EmployeesDao.full_name_user;
 import static models.EmployeesDao.rol_user;
+import models.Products;
+import models.ProductsDao;
 
 public class SystemView extends javax.swing.JFrame {
     // Empleados
     Employees employee = new Employees();
     EmployeesDao employeesDao = new EmployeesDao();
+    
+    // Clientes
+    Customers customer = new Customers();
+    CustomersDao customerDao = new CustomersDao();
+    
+    // Productos
+    Products product = new Products();
+    ProductsDao productDao = new ProductsDao();
     
     public SystemView() {
         initComponents();
@@ -18,16 +32,22 @@ public class SystemView extends javax.swing.JFrame {
         setResizable(false);
         titleInterface();
         setLocationRelativeTo(null);
-        
-        // Instancia del controlador
-        SettingsController setting = new SettingsController(this);
-        
         this.repaint();
+        
+        // Instanciar los controladores
+        // Controlador de configuraciones
+        SettingsController setting = new SettingsController(this);
+        setting.loadProfile();        
         
         // Controlador de empleados
         EmployeesController employees_controller = new EmployeesController(employee, employeesDao, this);
         employees_controller.listAllEmployees();
-        setting.loadProfile();
+        
+        // Controlador de clientes
+        CustomersController customersController = new CustomersController(customer, customerDao, this);
+        
+        // Controlador de productos
+        ProductsController productsController = new ProductsController(product, productDao, this);
     }
     
     public void titleInterface() {
